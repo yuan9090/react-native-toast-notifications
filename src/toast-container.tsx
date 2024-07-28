@@ -40,32 +40,7 @@ class ToastContainer extends Component<Props, State> {
   /**
    * Shows a new toast. Returns id
    */
-  show = (message: string | JSX.Element, toastOptions?: ToastOptions) => {
-    let id = toastOptions?.id || Math.random().toString();
-    const onDestroy = () => {
-      toastOptions?.onClose && toastOptions?.onClose();
-      this.setState({ toasts: this.state.toasts.filter((t) => t.id !== id) });
-    };
-
-    requestAnimationFrame(() => {
-      this.setState({
-        toasts: [
-          {
-            id,
-            onDestroy,
-            message,
-            open: true,
-            onHide: () => this.hide(id),
-            ...this.props,
-            ...toastOptions,
-          },
-          ...this.state.toasts.filter((t) => t.open),
-        ],
-      });
-    });
-
-    return id;
-  };
+  show = (message: string | JSX.Element, toastOptions?: ToastOptions) => this.renderToast(message, toastOptions)
 
   /**
    * Updates a toast, To use this create you must pass an id to show method first, then pass it here to update the toast.
@@ -107,6 +82,33 @@ class ToastContainer extends Component<Props, State> {
    */
   isOpen = (id: string) => {
     return this.state.toasts.some((t) => t.id === id && t.open);
+  }
+
+  renderToast(message: string | JSX.Element, toastOptions?: ToastOptions) {
+    let id = toastOptions?.id || Math.random().toString();
+    const onDestroy = () => {
+      toastOptions?.onClose && toastOptions?.onClose();
+      this.setState({ toasts: this.state.toasts.filter((t) => t.id !== id) });
+    };
+
+    requestAnimationFrame(() => {
+      this.setState({
+        toasts: [
+          {
+            id,
+            onDestroy,
+            message,
+            open: true,
+            onHide: () => this.hide(id),
+            ...this.props,
+            ...toastOptions,
+          },
+          ...this.state.toasts.filter((t) => t.open),
+        ],
+      });
+    });
+
+    return id;
   }
 
   renderBottomToasts() {
