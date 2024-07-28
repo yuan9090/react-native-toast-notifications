@@ -43,6 +43,21 @@ class ToastContainer extends Component<Props, State> {
   show = (message: string | JSX.Element, toastOptions?: ToastOptions) => this.renderToast(message, toastOptions)
 
   /**
+   * Shows a new success toast. Returns id
+   */
+  success = (message: string | JSX.Element, toastOptions?: ToastOptions) => this.renderToast(message, { type: "success", ...toastOptions })
+
+  /**
+   * Shows a new danger toast. Returns id
+   */
+  danger = (message: string | JSX.Element, toastOptions?: ToastOptions) => this.renderToast(message, { type: "danger", ...toastOptions })
+
+  /**
+   * Shows a new warning toast. Returns id
+   */
+  warning = (message: string | JSX.Element, toastOptions?: ToastOptions) => this.renderToast(message, { type: "warning", ...toastOptions })
+
+  /**
    * Updates a toast, To use this create you must pass an id to show method first, then pass it here to update the toast.
    */
   update = (
